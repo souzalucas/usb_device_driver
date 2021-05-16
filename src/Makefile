@@ -6,4 +6,4 @@ all:
 	$(MAKE) -C $(KERNEL_DIR) M=$(shell pwd) modules
 
 clean:
-	rm -rf *.o *.ko *.mod.* *.symvers *.order * *~
+	rm -rvf *.o *.ko *.mod.c *.mod *.cmd *.symvers *.order .*.cmd
