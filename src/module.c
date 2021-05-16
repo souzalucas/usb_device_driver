@@ -5,7 +5,7 @@
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Lucas Souza Santos");
-MODULE_DESCRIPTION("Este driver reconhece a conexão e desconexão de um ou mais dispositivos USBs específicos");
+MODULE_DESCRIPTION("Este driver reconhece a conexão e desconexão de um ou mais dispositivos USB específicos");
 
 // Eh chamada quando o dispositivo for conectado
 static int dispositivo_conectado(struct usb_interface *interface, const struct usb_device_id *id) {
