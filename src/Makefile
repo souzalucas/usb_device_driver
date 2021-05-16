@@ -1,4 +1,4 @@
-obj-m := modulo.o
+obj-m := module.o
 
 KERNEL_DIR = /lib/modules/$(shell uname -r)/build
 
