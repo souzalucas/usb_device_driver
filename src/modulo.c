@@ -32,7 +32,7 @@ MODULE_DEVICE_TABLE(usb, tabela_de_dispositivos);
 
 // Driver de dispositivo que sera fornecido ao kernel
 static struct usb_driver driver_de_dispositivo = {
-  .name = "Identificador de Dispositivo USB v1.0",
+  .name = "Identificador de Dispositivo USB",
   .id_table = tabela_de_dispositivos,
   .probe = dispositivo_conectado,
   .disconnect = dispositivo_desconectado
@@ -40,13 +40,13 @@ static struct usb_driver driver_de_dispositivo = {
 
 // Executa ao inicializar modulo
 static int __init iniciar_modulo(void) {
-  int ret = -1;
+  int ret;
   printk(KERN_INFO "Registrando driver de dispositivo USB");
   ret = usb_register(&driver_de_dispositivo);
   if (ret) {
-    printk("\tFalha ao registrar módulo, erro número %d", ret);
+    printk("Falha ao registrar módulo, erro número %d", ret);
   } else {
-    printk(KERN_INFO "\tDriver registrado com sucesso");
+    printk(KERN_INFO "Driver registrado com sucesso");
   }
   return ret;
 }
@@ -55,7 +55,7 @@ static int __init iniciar_modulo(void) {
 static void __exit descarregar_modulo(void) {
   printk(KERN_INFO "Descarregando driver de dispositivo USB");
   usb_deregister(&driver_de_dispositivo);
-  printk(KERN_INFO "\tDriver descarregado com sucesso");
+  printk(KERN_INFO "Driver descarregado com sucesso");
 }
 
 module_init(iniciar_modulo);
