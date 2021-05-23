@@ -19,19 +19,18 @@ static void dispositivo_desconectado(struct usb_interface *interface) {
 // Estrutura dos dispositivos USB
 static struct usb_device_id tabela_de_dispositivos[] = {
   // HD externo
-  { USB_DEVICE(0x13fd, 0x3920) },     // Informacao obtida atraves do comando "lsusb"
+  { USB_DEVICE(0x13fd, 0x3920) },     // Informacao obtida atraves do comando "lsusb" no linux
   // Smartphone Samsung
   { USB_DEVICE(0x04e8, 0x6860) },
   // Dispositivo Multilaser (mouse e teclado)
   { USB_DEVICE(0x062a, 0x4c01) },
-  // {.driver_info=42},
-  {} // a estrutura usb_device_id deve terminar com uma entrada NULL 
+  {} // A estrutura usb_device_id deve terminar com uma entrada NULL 
 };
 
-// Exportando tabela de IDs de dispositivos para o user space
+// Exportando tabela de IDs de dispositivos para o espaco de usuario
 MODULE_DEVICE_TABLE(usb, tabela_de_dispositivos);
 
-// Driver de dispositivo que será fornecido ao kernel
+// Driver de dispositivo que sera fornecido ao kernel
 static struct usb_driver driver_de_dispositivo = {
   .name = "Identificador de Dispositivo USB v1.0",
   .id_table = tabela_de_dispositivos,
@@ -39,21 +38,25 @@ static struct usb_driver driver_de_dispositivo = {
   .disconnect = dispositivo_desconectado
 };
 
-// Executa ao instalar modulo
+// Executa ao inicializar modulo
 static int __init iniciar_modulo(void) {
   int ret = -1;
   printk(KERN_INFO "Registrando driver de dispositivo USB");
   ret = usb_register(&driver_de_dispositivo);
-  printk(KERN_INFO "\tDriver registrado com sucesso");
+  if (ret) {
+    printk("\tFalha ao registrar módulo, erro número %d", ret);
+  } else {
+    printk(KERN_INFO "\tDriver registrado com sucesso");
+  }
   return ret;
 }
 
-// Executa ao remover modulo
-static void __exit remover_modulo(void) {
-  printk(KERN_INFO "Removendo driver de dispositivo USB");
+// Executa ao descarregar modulo
+static void __exit descarregar_modulo(void) {
+  printk(KERN_INFO "Descarregando driver de dispositivo USB");
   usb_deregister(&driver_de_dispositivo);
-  printk(KERN_INFO "\tDriver Removido com sucesso");
+  printk(KERN_INFO "\tDriver descarregado com sucesso");
 }
 
 module_init(iniciar_modulo);
-module_exit(remover_modulo);
+module_exit(descarregar_modulo);
